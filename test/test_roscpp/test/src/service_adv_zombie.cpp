@@ -33,6 +33,10 @@
 #include <ros/ros.h>
 #include <test_roscpp/TestStringString.h>
 
+#ifdef _WINDOWS
+#include <windows.h>
+#endif
+
 #include <stdlib.h>
 
 bool srvCallback(test_roscpp::TestStringString::Request &,
@@ -54,7 +58,7 @@ int main(int argc, char** argv)
 	{
 		ros::spinOnce();
 
-#ifndef _WIN32
+#ifndef _WINDOWS
 		usleep(100*1000);
 #else
 		Sleep(100);
