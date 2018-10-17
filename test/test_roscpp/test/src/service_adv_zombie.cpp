@@ -34,6 +34,7 @@
 #include <test_roscpp/TestStringString.h>
 
 #include <stdlib.h>
+#include <boost/thread.hpp>
 
 bool srvCallback(test_roscpp::TestStringString::Request &,
                  test_roscpp::TestStringString::Response &res)
@@ -54,11 +55,7 @@ int main(int argc, char** argv)
 	{
 		ros::spinOnce();
 
-#ifndef _WIN32
-		usleep(100*1000);
-#else
-		Sleep(100);
-#endif
+		boost::this_thread::sleep(boost::posix_time::milliseconds(100));
 	}
 
 	// Exit immediately without calling any atexit hooks
