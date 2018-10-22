@@ -62,6 +62,7 @@ class RospyLogger(logging.getLoggerClass()):
         else:
             return file_name, lineno, func_name
 
+        file_name = os.path.normcase(file_name)
         while hasattr(f, "f_code"):
             if f.f_back is None:
                 break
