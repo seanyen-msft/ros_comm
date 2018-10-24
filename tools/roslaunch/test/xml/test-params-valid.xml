@@ -33,13 +33,13 @@
   <!-- upload the contents of a file as base64 binary as a param -->
   <param name="binaryfile" binfile="$(find roslaunch)/resources/example.launch" />
   <!-- upload the output of a command as a param. -->
-  <param name="commandoutput" command="cat &quot;$(find roslaunch)/resources/example.launch&quot;" />
+  <param name="commandoutput" command="python $(find roslaunch)/resources/shellutils.py cat &quot;$(find roslaunch)/resources/example.launch&quot;" />
 
   <!-- upload the output of a command as a param as types. -->
   <param name="commandoutputinteger" type="int" command="echo 0" />
   <param name="commandoutputdouble" type="double" command="echo 10" />
   <param name="commandoutputbool" type="bool" command="echo true" />
-  <param name="commandoutputyaml" type="yaml" command="cat &quot;$(find roslaunch)/test/params.yaml&quot;" />
+  <param name="commandoutputyaml" type="yaml" command="python $(find roslaunch)/resources/shellutils.py cat &quot;$(find roslaunch)/test/params.yaml&quot;" />
 
 
   <!-- test that we can override params -->
