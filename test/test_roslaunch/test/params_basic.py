@@ -107,9 +107,8 @@ class TestParamsBasic(unittest.TestCase):
         dir = rospkg.RosPack().get_path('roslaunch')
         with open(os.path.join(dir, 'resources', 'example.launch'), 'r') as f:
             text_data = f.read()
-        with open(os.path.join(dir, 'resources', 'example.launch'), 'rb') as f:
-            binary_data = f.read()
-        self.assertEquals(get_param("commandoutput"), binary_data)
+        binary_data = Binary(text_data)
+        self.assertEquals(get_param("commandoutput"), text_data)
         self.assertEquals(get_param("textfile"), text_data)
         ## test 'binfile' attribute
         bindata = get_param("binaryfile")
