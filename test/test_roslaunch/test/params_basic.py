@@ -108,9 +108,13 @@ class TestParamsBasic(unittest.TestCase):
         with open(os.path.join(dir, 'resources', 'example.launch'), 'r') as f:
             text_data = f.read()
         binary_data = Binary(text_data)
-        self.assertEquals(get_param("commandoutput"), text_data)
+
+        # test 'command' attribute
+        if os.name != 'nt' : # skip testcase for `cat` command in Windows
+            self.assertEquals(get_param("commandoutput"), text_data)
+        # test 'textfile' attribute
         self.assertEquals(get_param("textfile"), text_data)
-        ## test 'binfile' attribute
+        # test 'binfile' attribute
         bindata = get_param("binaryfile")
         self.assertTrue(isinstance(bindata, Binary))
         self.assertEquals(bindata.data, binary_data)
