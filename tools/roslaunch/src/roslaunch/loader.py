@@ -488,7 +488,7 @@ class Loader(object):
                 from xmlrpc.client import Binary
             except ImportError:
                 from xmlrpclib import Binary
-            with open(binfile, 'r') as f:
+            with open(binfile, 'rb') as f:
                 return Binary(f.read())
         elif command is not None:
             try:
