@@ -62,7 +62,7 @@ class TestRoslaunchOnline(unittest.TestCase):
         check_call([cmd, '--wait', 'test_roslaunch', 'noop.launch'])
 
         # tripwire test for #2370, not really possible to validate output on this
-        check_call([cmd, '--screen', 'test_roslaunch', 'noop.launch'])        
+        check_call([cmd, '--screen', 'test_roslaunch', 'noop.launch'])
 
 if __name__ == '__main__':
     rostest.run(PKG, NAME, TestRoslaunchOnline, sys.argv)
