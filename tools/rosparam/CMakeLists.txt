@@ -4,7 +4,3 @@ find_package(catkin REQUIRED)
 catkin_package()
 
 catkin_python_setup()
-
-if (WIN32)
-  add_windows_python_exe_helper(rosparam)
-endif()
