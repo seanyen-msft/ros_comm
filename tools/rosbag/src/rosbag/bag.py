@@ -79,8 +79,11 @@ class ROSBagException(Exception):
     """
     Base class for exceptions in rosbag.
     """
-    def __init__(self, value):
+    def __init__(self, value=None):
         self.value = value
+        #fix for #1209. needed in Python 2.7.
+        # For details: https://stackoverflow.com/questions/41808912/cannot-unpickle-exception-subclass
+        self.args = (value,)
 
     def __str__(self):
         return self.value
@@ -96,7 +99,8 @@ class ROSBagUnindexedException(ROSBagException):
     """
     Exception for unindexed bags.
     """
-    def __init__(self):
+    def __init__(self, *args):
+        #*args needed for #1209
         ROSBagException.__init__(self, 'Unindexed bag')
 
 class ROSBagEncryptNotSupportedException(ROSBagException):
@@ -1044,8 +1048,11 @@ class Bag(object):
 
                     msg_count = 0
                     for connection in connections:
-                        for chunk in self._chunks:
-                            msg_count += chunk.connection_counts.get(connection.id, 0)
+                        if self._chunks:
+                            for chunk in self._chunks:
+                                msg_count += chunk.connection_counts.get(connection.id, 0)
+                        else:
+                            msg_count += len(self._connection_indexes.get(connection.id, []))
                     topic_msg_counts[topic] = msg_count
 
                     if self._connection_indexes_read:
