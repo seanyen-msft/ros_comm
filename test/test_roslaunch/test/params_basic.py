@@ -57,8 +57,8 @@ class TestParamsBasic(unittest.TestCase):
         print(get_param('stringbar'))
         self.assertEquals(get_param('stringbar'), 'bar')
         self.assertEquals(get_param('str10'), '10')
-        self.assertEquals(get_param('string10'), '10')        
-        self.assertEquals(get_param('stringentity'), '<stringentity/>')        
+        self.assertEquals(get_param('string10'), '10')
+        self.assertEquals(get_param('stringentity'), '<stringentity/>')
         ## Test roslaunch integer params
         self.assertEquals(get_param("integerneg1"), -1)
         self.assertEquals(get_param("integer0"), 0)
@@ -82,13 +82,13 @@ class TestParamsBasic(unittest.TestCase):
         self.assertEquals(get_param("/wg2/childparam"),"wg2")
         self.assertEquals(get_param("/wg3/childparam"),"wg3")
         self.assertEquals(get_param("/wg/wg4/childparam"),"wg4")
-        self.assertEquals(get_param("/wg/wg4/wg5/childparam"),"wg5")          
+        self.assertEquals(get_param("/wg/wg4/wg5/childparam"),"wg5")
         ## Test roslaunch <group> tag with and without ns attribute
         self.assertEquals(get_param("/wga/wg/childparam"),"wg")
         self.assertEquals(get_param("/wga/wg2/childparam"),"wg2")
         self.assertEquals(get_param("/wga/wg3/childparam"),"wg3")
         self.assertEquals(get_param("/wga/wg/wg4/childparam"),"wg4")
-        self.assertEquals(get_param("/wga/wg/wg4/wg5/childparam"),"wg5")          
+        self.assertEquals(get_param("/wga/wg/wg4/wg5/childparam"),"wg5")
         # test second-level group
         self.assertEquals(get_param("/wga/wgb/wg/childparam"),"bwg")
         self.assertEquals(get_param("/wga/wgb/wg2/childparam"),"bwg2")
@@ -100,8 +100,8 @@ class TestParamsBasic(unittest.TestCase):
         self.assertEquals(get_param("/wgc2/childparam"),"wg2")
         self.assertEquals(get_param("/wgc3/childparam"),"wg3")
         self.assertEquals(get_param("/wgc/wg4/childparam"),"wg4")
-        self.assertEquals(get_param("/wgc/wg4/wg5/childparam"),"wg5")          
-        
+        self.assertEquals(get_param("/wgc/wg4/wg5/childparam"),"wg5")
+
     ## test 'command' attribute
     def test_commandandfile(self):
         dir = rospkg.RosPack().get_path('roslaunch')
@@ -109,13 +109,16 @@ class TestParamsBasic(unittest.TestCase):
             text_data = f.read()
         with open(os.path.join(dir, 'resources', 'example.launch'), 'rb') as f:
             binary_data = f.read()
-        self.assertEquals(get_param("commandoutput"), binary_data)
+
+        # test 'command' attribute
+        if os.name != 'nt' : # skip testcase for `cat` command in Windows
+            self.assertEquals(get_param("commandoutput"), text_data)
+        # test 'textfile' attribute
         self.assertEquals(get_param("textfile"), text_data)
-        ## test 'binfile' attribute
+        # test 'binfile' attribute
         bindata = get_param("binaryfile")
         self.assertTrue(isinstance(bindata, Binary))
         self.assertEquals(bindata.data, binary_data)
-    
+
 if __name__ == '__main__':
     rostest.rosrun(PKG, sys.argv[0], TestParamsBasic, sys.argv)
-    
