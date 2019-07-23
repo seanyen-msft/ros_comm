@@ -500,13 +500,13 @@ class Loader(object):
                     # 1. search for a wrapper executable (of the same name) under the same directory with stat.S_IXUSR flag
                     # 2. if no wrapper is present, prepend command with 'python' executable
                     def split_with_single_quote_enclosed_fixup(command):
-                        in_command = shlex.split(command, posix=False)  # use non-posix method on Windows
+                        tokens = shlex.split(command, posix=False)  # use non-posix method on Windows
                         if not ("'" in command):
-                            return in_command
+                            return tokens
                         new_command = []
-                        for token in in_command:
+                        for token in tokens:
                             if token.startswith("'") and token.endswith("'"):
-                                new_command.append("{}".format(token[1:-1]))
+                                new_command.append(token[1:-1])
                             else:
                                 new_command.append(token)
                         return new_command
