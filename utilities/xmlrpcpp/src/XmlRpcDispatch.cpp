@@ -11,9 +11,51 @@
 
 #if defined(_WINDOWS)
 # include <winsock2.h>
-static inline int poll( struct pollfd *pfd, int nfds, int timeout)
+static int poll( struct pollfd *pfd, int nfds, int timeout)
 {
-  return WSAPoll(pfd, nfds, timeout);
+  FD_SET writable;
+  FD_SET error;
+  FD_ZERO(&writable);
+  FD_ZERO(&error);
+  for (int i = 0; i < nfds; ++i)
+  {
+    if (pfd[i].events & POLLOUT)
+    {
+      FD_SET(pfd[i].fd, &writable);
+      FD_SET(pfd[i].fd, &error);
+    }
+  }
+
+  int connectionError = 0;
+  if (writable.fd_count > 0)
+  {
+    int result = select(0, nullptr, &writable, &error, nullptr);
+    if (SOCKET_ERROR == result)
+    {
+      return SOCKET_ERROR;
+    }
+
+    if (0 != result)
+    {
+      for (int i = 0; i < nfds; ++i)
+      {
+        if ((pfd[i].events & POLLOUT) &&
+            (FD_ISSET(pfd[i].fd, &error)))
+        {
+          connectionError++;
+        }
+      }
+    }
+  }
+
+  if (connectionError == nfds)
+  {
+    return SOCKET_ERROR;
+  }
+  else
+  {
+    return WSAPoll(pfd, nfds, timeout);
+  }
 }
 
 # define USE_FTIME
