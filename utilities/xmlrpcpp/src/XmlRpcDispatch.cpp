@@ -13,6 +13,7 @@
 # include <winsock2.h>
 static int poll( struct pollfd *pfd, int nfds, int timeout)
 {
+  // workaround: "Windows 8 Bugs 309411 – WSAPoll does not report failed connections"
   FD_SET writable;
   FD_SET error;
   FD_ZERO(&writable);
