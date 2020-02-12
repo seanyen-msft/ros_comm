@@ -12,4 +12,6 @@ jobs:
     steps:
       - name: Setup ROS
         uses: seanyen/setup-ros@seanyen/devel
+        with:
+          required-ros-distributions: melodic
       - run: vcs --help
