@@ -11,5 +11,5 @@ jobs:
           os: [macOS-latest, ubuntu-18.04, windows-latest]
     steps:
       - name: Setup ROS
-        uses: ros-tooling/setup-ros@0.0.11
+        uses: seanyen/setup-ros@master
       - run: vcs --help
