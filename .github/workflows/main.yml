@@ -1,0 +1,15 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+          os: [macOS-latest, ubuntu-18.04, windows-latest]
+    steps:
+      - name: Setup ROS
+        uses: ros-tooling/setup-ros@0.0.11
+      - run: vcs --help
